@@ -2,16 +2,25 @@ import random
 import string
 import nltk
 from abc import ABC, abstractmethod
+from nltk.corpus import words
 
-nltk.download('words')
 
 class PasswordGenerator(ABC):
+    """
+    Base class for generating passwords.
+    """
     @abstractmethod
     def generator(self):
+        """
+        Subclasses should override this method to generate password.
+        """
         pass
 
 
 class RandomPasswordGenerator(PasswordGenerator):
+    """
+    Class to generate a random password.
+    """
     def __init__(self, length: int = 8, include_numbers: bool = False, include_symbols: bool = False):
         self.length = length
         self.charecters = string.ascii_letters
@@ -21,10 +30,16 @@ class RandomPasswordGenerator(PasswordGenerator):
             self.charecters += string.punctuation
             
     def generator(self):
+        """
+        Generate a password from specified characters.
+        """
         return ''.join([random.choice(self.charecters) for _ in range(self.length)])
 
 
 class MemorablePasswordGenerator(PasswordGenerator):
+    """
+    Class to generate a memorable password.
+    """
     def __init__(
             self,
             number_of_words: int = 4,
@@ -33,7 +48,7 @@ class MemorablePasswordGenerator(PasswordGenerator):
             vocabulary: list = None
     ):
         if vocabulary is None :
-            vocabulary = nltk.corpus.words.words()
+            vocabulary = nltk.corpus.words.words()  # edit this to any vocabulary list you want
 
         self.vocabulary = vocabulary
         self.number_of_words = number_of_words
@@ -41,18 +56,27 @@ class MemorablePasswordGenerator(PasswordGenerator):
         self.capitalize = capitalize
         
     def generator(self):
-        password_words = [random.choice(self.vocabulary) for _ in range(self.number_of_words)]
+        """
+        Generate a password from a list of vocabulary words.
+        """
+        password_words = [random.choice(self.vocabulary).upper() if random.choice([True, False]) else random.choice(self.vocabulary).lower() for _ in range(self.number_of_words) ]
         if self.capitalize :
-            password_words = [word.upper() if random.choice([True, False]) else word.lower() for word in password_words ]
+            password_words = [random.choice(self.vocabulary).upper() for _ in range(self.number_of_words)]
 
         return self.separator.join(password_words)
 
 
 class PinGenerator(PasswordGenerator):
+    """
+    Class to generate a numeric pin code.
+    """
     def __init__(self, length: int = 8):
         self.length = length    
     
     def generator(self):
+        """
+        Generate a numeric pin code.
+        """
         return ''.join([random.choice(string.digits) for _ in range(self.length)])
 
 
@@ -90,3 +114,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
