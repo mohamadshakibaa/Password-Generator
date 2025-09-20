@@ -3,6 +3,7 @@ import random
 import nltk
 from nltk.corpus import words
 
+
 def generate_random_password(length: int = 8, include_numbers: bool = False, include_symbols: bool = False):
     password = string.ascii_letters
     if include_numbers:
