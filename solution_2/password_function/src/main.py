@@ -5,6 +5,12 @@ from nltk.corpus import words
 
 
 def generate_random_password(length: int = 8, include_numbers: bool = False, include_symbols: bool = False):
+    """ Generate a random password
+
+    :param length: length of password, defaults to 8
+    :param include_numbers: if you have add numbers, defaults to False
+    :param include_symbols: if you have add symbols, defaults to False
+    """
     password = string.ascii_letters
     if include_numbers:
         password += string.digits
@@ -15,6 +21,9 @@ def generate_random_password(length: int = 8, include_numbers: bool = False, inc
 
 
 def generate_pin(length: int = 8):
+    """
+    Generate a numeric pin code.
+    """
     if not length:
         length = string.digits
         return length
@@ -27,13 +36,16 @@ def generate_memorable_password(
         seperate: str = "-",
         captalize: bool = False
     ):
-        vocab = nltk.corpus.words.words()
-        if not vocab:
-            vocab
-        if captalize:
-            return seperate.join([random.choice(vocab).upper() for _ in range(number_of_word)])
+    """
+    Generate a memorable password from a list of vocabulary words.
+    """
+    vocab = nltk.corpus.words.words()
+    if not vocab:
+         vocab
+    if captalize:
+        return seperate.join([random.choice(vocab).upper() for _ in range(number_of_word)])
         
-        return seperate.join([random.choice(vocab).upper() if random.choice([True, False]) else random.choice(vocab).lower() for _ in range(number_of_word)])
+    return seperate.join([random.choice(vocab).upper() if random.choice([True, False]) else random.choice(vocab).lower() for _ in range(number_of_word)])
 
 
 def main():
